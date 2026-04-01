@@ -1,33 +1,43 @@
 import sys
-
 import pygame
-from pygame import Rect
-from pygame.color import THECOLORS
+
+from Button import Button
 
 pygame.init()
+screen = pygame.display.set_mode((800, 600))
+clock = pygame.time.Clock()
 
-# Settings
-screen_size = (800, 600)
-font = "couriernew"
-font_size = 40
+def start_game():
+    print("Игра началась!")
 
-screen = pygame.display.set_mode(screen_size)
-pygame.display.set_caption("My Awesome Game")
+def open_settings():
+    print("Открываем настройки...")
 
-r = Rect(300, 400, 200, 50)
-pygame.draw.rect(screen, (255, 0, 0), r)
+def exit_game():
+    pygame.quit()
+    sys.exit()
 
-sys_font = pygame.font.SysFont(font, font_size)
-text = sys_font.render(str('Start'), True, THECOLORS['green'])
-screen.blit(text, (340, 400))
+buttons = [
+    Button("Start", 300, 150, 200, 60, (50, 150, 50), (70, 200, 70), start_game),
+    Button("Settings", 300, 250, 200, 60, (50, 50, 150), (70, 70, 200), open_settings),
+    Button("Exit", 300, 350, 200, 60, (150, 50, 50), (200, 70, 70), exit_game)
+]
 
 running = True
 while running:
+    screen.fill((30, 30, 30))
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if r.collidepoint(event.pos):
-                print("Start button clicked!")
+
+
+        for btn in buttons:
+            btn.handle_event(event)
+
+    for btn in buttons:
+        btn.draw(screen)
+
     pygame.display.flip()
+    clock.tick(60)
