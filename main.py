@@ -4,7 +4,8 @@ import pygame
 from Button import Button
 
 pygame.init()
-screen = pygame.display.set_mode((800, 600))
+screen = pygame.display.set_mode((800, 600),flags=pygame.DOUBLEBUF)
+pygame.display.set_caption("DungeonRush")
 clock = pygame.time.Clock()
 
 def start_game():
@@ -27,6 +28,12 @@ running = True
 while running:
     screen.fill((30, 30, 30))
 
+    for btn in buttons:
+        btn.draw(screen)
+
+    pygame.display.flip()
+    clock.tick(60)
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -35,9 +42,3 @@ while running:
 
         for btn in buttons:
             btn.handle_event(event)
-
-    for btn in buttons:
-        btn.draw(screen)
-
-    pygame.display.flip()
-    clock.tick(60)
